@@ -4,6 +4,21 @@ body {
   background-color: #f4f4f4;
 }
 
+#menuToggle {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #2c3e50;
+  color: white;
+  font-size: 24px;
+  border: none;
+  z-index: 1000;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .container {
   display: flex;
   height: 100vh;
@@ -14,6 +29,7 @@ body {
   background-color: #2c3e50;
   color: white;
   padding: 20px;
+  transition: transform 0.3s ease;
 }
 
 .sidebar h2 {
@@ -72,4 +88,52 @@ iframe#visorFrame {
   font-size: 18px;
   font-weight: bold;
   box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Logo */
+.logo {
+  width: 120px;
+  display: block;
+  margin: 0 auto 15px auto;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 999;
+    width: 200px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+  }
+
+  #menuToggle {
+    display: block;
+  }
+
+  .contenido {
+    margin-top: 50px;
+  }
+
+  iframe#visorFrame {
+    height: calc(100vh - 50px);
+  }
 }
