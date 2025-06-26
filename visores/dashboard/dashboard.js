@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     header: true,
     download: true,
     complete: function(results) {
-      const data = results.data.slice(0, 10); // Solo los primeros 10 para gráficos
+      const dataCompleta = results.data;
+      const dataParaGraficos = dataCompleta.slice(0, 10); // Solo para gráficos
 
       const centros = [];
       const hombres = [];
@@ -15,21 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
       let totalBrechas = 0;
       let contadorBrechas = 0;
 
-      data.forEach(row => {
-        const nombre = row.nombre_cen || row.nombre || 'Escuela';
+      // 🔢 Calcular totales con TODAS las filas
+      dataCompleta.forEach(row => {
         const h = parseInt(row["2024_TOTAL_HOMBRES"] || 0);
         const m = parseInt(row["2024_TOTAL_MUJERES"] || 0);
         const brecha = parseFloat(row["2024_BRECHA_GENERO"] || 0);
 
-        const total = h + m;
-        const p_insc = parseFloat(row.porcentaje_inscritos || (total > 0 ? (total / 1000) * 100 : 0)); // Simulación
-
-        centros.push(nombre);
-        hombres.push(h);
-        mujeres.push(m);
-        porcentaje.push(p_insc.toFixed(2));
-
-        // Acumuladores para indicadores globales
         totalHombres += h;
         totalMujeres += m;
         if (!isNaN(brecha)) {
@@ -38,13 +30,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Mostrar indicadores arriba de los gráficos
+      // 📈 Mostrar indicadores
       document.getElementById('totalHombres').textContent = `👨 Hombres: ${totalHombres.toLocaleString()}`;
       document.getElementById('totalMujeres').textContent = `👩 Mujeres: ${totalMujeres.toLocaleString()}`;
       const promedio = contadorBrechas > 0 ? (totalBrechas / contadorBrechas).toFixed(2) : '0';
       document.getElementById('promedioBrecha').textContent = `📊 Prom. Brecha: ${promedio}%`;
 
-      // Gráfico 1: Género
+      // 📊 Preparar datos solo para los gráficos
+      dataParaGraficos.forEach(row => {
+        const nombre = row.nombre_cen || row.nombre || 'Escuela';
+        const h = parseInt(row["2024_TOTAL_HOMBRES"] || 0);
+        const m = parseInt(row["2024_TOTAL_MUJERES"] || 0);
+        const total = h + m;
+        const p_insc = parseFloat(row.porcentaje_inscritos || (total > 0 ? (total / 1000) * 100 : 0));
+
+        centros.push(nombre);
+        hombres.push(h);
+        mujeres.push(m);
+        porcentaje.push(p_insc.toFixed(2));
+      });
+
+      // 🎨 Gráfico 1: Género
       new Chart(document.getElementById('graficoGenero'), {
         type: 'bar',
         data: {
@@ -62,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-      // Gráfico 2: Porcentaje de Inscritos (simulado)
+      // 🎨 Gráfico 2: Porcentaje de Inscritos
       new Chart(document.getElementById('graficoInscritos'), {
         type: 'line',
         data: {
