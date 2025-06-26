@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Educativo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <link rel="stylesheet" href="../../estilos.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .grafico-box {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    canvas {
+      width: 100% !important;
+      height: auto !important;
+    }
+  </style>
+</head>
+<body>
+  <h2>📊 Dashboard de Indicadores Educativos</h2>
+
+  <div class="grafico-box">
+    <h3>Matrícula por Género (Primeros 10 Centros)</h3>
+    <canvas id="graficoGenero"></canvas>
+  </div>
+
+  <div class="grafico-box">
+    <h3>Porcentaje Promedio de Inscripción (Muestra)</h3>
+    <canvas id="graficoInscritos"></canvas>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
