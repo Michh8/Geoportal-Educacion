@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       data.forEach(row => {
         const nombre = row.nombre_cen || row.nombre || 'Escuela';
-        const h = parseInt(row.total_hombres || row.TOTAL_HOMBRES || 0);
-        const m = parseInt(row.total_mujeres || row.TOTAL_MUJERES || 0);
+        const h = parseInt(row["2024_TOTAL_HOMBRES"] || 0);
+        const m = parseInt(row["2024_TOTAL_MUJERES"] || 0);
         const total = h + m;
         const p_insc = parseFloat(row.porcentaje_inscritos || (total > 0 ? (total / 1000) * 100 : 0)); // simulación
 
