@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Geoportal Educativo</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <div class="container">
+    <nav class="sidebar">
+      <h2>Geoportal</h2>
+      <ul>
+        <li><button onclick="cargarVisor('visores/isocronas.html')">Isócronas</button></li>
+        <li><button onclick="cargarVisor('visores/centros_nivel.html')">Centros por Nivel</button></li>
+        <li><button onclick="cargarVisor('visores/brechas/index.html')">Brecha de Género</button></li>
+        <li><button onclick="cargarVisor('visores/escolarizacion/index.html')">Porcentaje de inscritos </button></li>
+      </ul>
+    </nav>
+
+    <main class="contenido">
+      <iframe id="visorFrame" src="visores/isocronas.html" frameborder="0"></iframe>
+    </main>
+  </div>
+
+  <script>
+    function cargarVisor(ruta) {
+      document.getElementById('visorFrame').src = ruta;
+    }
+  </script>
+</body>
+</html>
