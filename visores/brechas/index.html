@@ -1,64 +1,149 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="./resources/ol.css">
-        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
-        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
-        <link rel="stylesheet" href="./resources/qgis2web.css">
-        <style>
-        html, body {
-            background-color: #ffffff;
-        }
-        .ol-control > * {
-            background-color: #f8f8f8!important;
-            color: #444444!important;
-            border-radius: 0px;
-        }
-        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
-            color: #444444!important;
-        }
-        .search-layer-input-search {
-            background-color: #f8f8f8!important;
-        }
-        .ol-control > *:focus, .ol-control >*:hover {
-            background-color: rgba(248, 248, 248, 0.7)!important;
-        } 
-        .ol-control {
-            background-color: rgba(255,255,255,.4) !important;
-            padding: 2px !important;
-        } 
-        </style>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-        <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
-        </style>
-        <title></title>
-    </head>
-    <body>
-        <div id="map">
-            <div id="popup" class="ol-popup">
-                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content"></div>
-            </div>
-        </div>
-        <script src="resources/qgis2web_expressions.js"></script>
-        <script src="./resources/functions.js"></script>
-        <script src="./resources/ol.js"></script>
-        <script src="./resources/ol-layerswitcher.js"></script>
-        <script src="layers/Escuelas_2024_geopescuelas_1.js"></script>
-        <script src="styles/Escuelas_2024_geopescuelas_1_style.js"></script>
-        <script src="./layers/layers.js" type="text/javascript"></script> 
-        <script src="./resources/Autolinker.min.js"></script>
-        <script src="./resources/qgis2web.js"></script>
-    </body>
+  <link rel="stylesheet" href="./resources/ol.css">
+  <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+  <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+  <link rel="stylesheet" href="./resources/qgis2web.css">
+
+  <style>
+    html, body {
+      background-color: #ffffff;
+    }
+
+    .ol-control > * {
+      background-color: #f8f8f8!important;
+      color: #444444!important;
+      border-radius: 0px;
+    }
+
+    .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+      color: #444444!important;
+    }
+
+    .search-layer-input-search {
+      background-color: #f8f8f8!important;
+    }
+
+    .ol-control > *:focus, .ol-control > *:hover {
+      background-color: rgba(248, 248, 248, 0.7)!important;
+    }
+
+    .ol-control {
+      background-color: rgba(255,255,255,.4) !important;
+      padding: 2px !important;
+    }
+
+    html, body, #map {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Contenedor del gráfico */
+    #colorChartBox {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+  </style>
+
+  <title>Mapa de Escuelas</title>
+</head>
+
+<body>
+  <div id="map">
+    <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+    </div>
+  </div>
+
+  <!-- Contenedor del gráfico de colores -->
+  <div id="colorChartBox">
+    <canvas id="colorChart" width="250" height="250"></canvas>
+  </div>
+
+  <!-- Librerías necesarias -->
+  <script src="resources/qgis2web_expressions.js"></script>
+  <script src="./resources/functions.js"></script>
+  <script src="./resources/ol.js"></script>
+  <script src="./resources/ol-layerswitcher.js"></script>
+  <script src="layers/Escuelas_2024_geopescuelas_1.js"></script>
+  <script src="styles/Escuelas_2024_geopescuelas_1_style.js"></script>
+  <script src="./layers/layers.js" type="text/javascript"></script> 
+  <script src="./resources/Autolinker.min.js"></script>
+  <script src="./resources/qgis2web.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Script para generar el gráfico por color -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      try {
+        const capa = window.json_Escuelas_2024_geopescuelas_1;
+        const rangos = {
+          "Rojo (-938 a -13)": { count: 0, color: "#e74c3c" },
+          "Naranja (-13 a -5)": { count: 0, color: "#e67e22" },
+          "Amarillo (-5 a 0)": { count: 0, color: "#f1c40f" },
+          "Verde claro (0 a 6)": { count: 0, color: "#2ecc71" },
+          "Verde oscuro (6 a 823)": { count: 0, color: "#27ae60" }
+        };
+
+        capa.features.forEach(f => {
+          const valor = f.properties["2024_BRECHA_GENERO"];
+          if (valor <= -13) rangos["Rojo (-938 a -13)"].count++;
+          else if (valor > -13 && valor <= -5) rangos["Naranja (-13 a -5)"].count++;
+          else if (valor > -5 && valor <= 0) rangos["Amarillo (-5 a 0)"].count++;
+          else if (valor > 0 && valor <= 6) rangos["Verde claro (0 a 6)"].count++;
+          else if (valor > 6) rangos["Verde oscuro (6 a 823)"].count++;
+        });
+
+        const total = Object.values(rangos).reduce((sum, r) => sum + r.count, 0);
+        const labels = Object.keys(rangos).map(k => {
+          const p = ((rangos[k].count / total) * 100).toFixed(1);
+          return `${k} (${rangos[k].count} | ${p}%)`;
+        });
+        const values = Object.values(rangos).map(r => r.count);
+        const colors = Object.values(rangos).map(r => r.color);
+
+        new Chart(document.getElementById("colorChart"), {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: values,
+              backgroundColor: colors
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              title: {
+                display: true,
+                text: "Distribución por Brecha de Género"
+              },
+              legend: {
+                position: "bottom"
+              }
+            }
+          }
+        });
+      } catch (err) {
+        console.error("No se pudo generar el gráfico de colores:", err);
+      }
+    });
+  </script>
+</body>
 </html>

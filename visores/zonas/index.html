@@ -43,11 +43,11 @@
       padding: 2px !important;
     }
 
-    /* Caja flotante del gráfico */
+    /* Caja flotante del gráfico (esquina inferior izquierda) */
     #zonaChartBox {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      bottom: 10px;
+      left: 10px;
       background: white;
       padding: 15px;
       border-radius: 8px;
@@ -99,15 +99,19 @@
         const labels = Object.keys(zonas);
         const valores = Object.values(zonas);
 
+        const colores = labels.map(label => {
+          if (label.toLowerCase() === "urbana") return "#9bd6f5 "; // Celeste
+          if (label.toLowerCase() === "rural") return "#ff69b4";  // Rosa
+          return "#cccccc"; // Gris claro para otros
+        });
+
         new Chart(document.getElementById("zonaChart"), {
           type: "pie",
           data: {
             labels: labels,
             datasets: [{
               data: valores,
-              backgroundColor: [
-                "#3498db", "#2ecc71", "#f1c40f", "#e74c3c", "#9b59b6", "#34495e"
-              ]
+              backgroundColor: colores
             }]
           },
           options: {
