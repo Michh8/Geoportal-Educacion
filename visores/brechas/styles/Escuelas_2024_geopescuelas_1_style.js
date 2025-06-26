@@ -9,8 +9,8 @@ var style_Escuelas_2024_geopescuelas_1 = function(feature, resolution){
     
     var labelText = ""; 
     var value = feature.get("2024_BRECHA_GENERO");
-    var labelFont = "10px, sans-serif";
-    var labelFill = "#000000";
+    var labelFont = "13.0px \'Open Sans\', sans-serif";
+    var labelFill = "#323232";
     var bufferColor = "";
     var bufferWidth = 0;
     var textAlign = "left";
