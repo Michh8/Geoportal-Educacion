@@ -5,8 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Geoportal Educativo</title>
   <link rel="stylesheet" href="estilos.css">
+
+  <!-- Estilos para el loader -->
+  <style>
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-family: sans-serif;
+      font-size: 18px;
+      margin-top: 10px;
+      color: #444;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- Pantalla de carga -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p class="loader-text">Cargando visor educativo...</p>
+  </div>
 
   <!-- Botón menú responsive -->
   <button id="menuToggle" onclick="toggleSidebar()">☰</button>
@@ -32,8 +74,25 @@
   </div>
 
   <script>
+    const iframe = document.getElementById('visorFrame');
+    const loader = document.getElementById('loader');
+
+    // Mostrar loader inicial
+    loader.style.display = 'flex';
+
+    // Ocultar loader cuando el iframe carga por primera vez
+    iframe.onload = () => {
+      loader.style.display = 'none';
+    };
+
     function cargarVisor(ruta) {
-      document.getElementById('visorFrame').src = ruta;
+      loader.style.display = 'flex'; // Mostrar loader
+
+      iframe.onload = () => {
+        loader.style.display = 'none'; // Ocultar cuando cargue
+      };
+
+      iframe.src = ruta;
 
       // Elimina la clase "selected" de todos los botones
       document.querySelectorAll('.sidebar button').forEach(btn => {
