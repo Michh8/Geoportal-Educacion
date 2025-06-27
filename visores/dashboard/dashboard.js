@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // 📈 Mostrar indicadores
       document.getElementById('totalHombres').textContent = `👨 Hombres: ${totalHombres.toLocaleString()}`;
       document.getElementById('totalMujeres').textContent = `👩 Mujeres: ${totalMujeres.toLocaleString()}`;
-      const promedio = contadorBrechas > 0 ? (totalBrechas / contadorBrechas).toFixed(2) : '0';
-      document.getElementById('promedioBrecha').textContent = `📊 Prom. Brecha: ${promedio}%`;
+      const promedio = totalMujeres-totalHombres;
+      document.getElementById('promedioBrecha').textContent = `📊Brecha: ${promedio}%`;
 
       // 📊 Preparar datos solo para los gráficos
       dataParaGraficos.forEach(row => {
