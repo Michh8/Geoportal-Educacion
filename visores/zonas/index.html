@@ -7,10 +7,18 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
+  <!-- Estilos y librerías -->
   <link rel="stylesheet" href="./resources/ol.css">
   <link rel="stylesheet" href="resources/fontawesome-all.min.css">
   <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
   <link rel="stylesheet" href="./resources/qgis2web.css">
+
+  <!-- jQuery y jQuery UI para mover y redimensionar -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -54,6 +62,8 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       z-index: 999;
       width: 250px;
+      resize: both; /* CSS básico de redimensionamiento */
+      overflow: auto;
     }
   </style>
 
@@ -86,6 +96,8 @@
 
   <!-- Script para generar el gráfico -->
   <script>
+    let zonaChart; // Variable global para acceder desde fuera
+
     document.addEventListener("DOMContentLoaded", function () {
       try {
         const capa = window.json_Escuelas_zonas_1;
@@ -100,12 +112,12 @@
         const valores = Object.values(zonas);
 
         const colores = labels.map(label => {
-          if (label.toLowerCase() === "urbana") return "#9bd6f5 "; // Celeste
+          if (label.toLowerCase() === "urbana") return "#9bd6f5"; // Celeste
           if (label.toLowerCase() === "rural") return "#ff69b4";  // Rosa
           return "#cccccc"; // Gris claro para otros
         });
 
-        new Chart(document.getElementById("zonaChart"), {
+        zonaChart = new Chart(document.getElementById("zonaChart"), {
           type: "pie",
           data: {
             labels: labels,
@@ -127,6 +139,16 @@
             }
           }
         });
+
+        // Hacer la caja del gráfico movible y redimensionable
+        $("#zonaChartBox").draggable().resizable({
+          minHeight: 150,
+          minWidth: 150,
+          resize: function () {
+            zonaChart.resize(); // Redibuja el gráfico al cambiar tamaño
+          }
+        });
+
       } catch (e) {
         console.error("No se pudo generar el gráfico:", e);
       }
