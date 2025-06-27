@@ -140,27 +140,21 @@ iframe#visorFrame {
   }
 }
 
-/* =================================== */
-/* BOTÓN SELECCIONADO CON PUNTA FLUIDA */
-/* =================================== */
+/* ========================================= */
+/* BOTÓN SELECCIONADO CON PUNTA INTEGRADA   */
+/* ========================================= */
 .sidebar button.selected {
   background-color: #af47bd;
   transform: translateX(15px);
   position: relative;
   z-index: 1;
+  clip-path: polygon(
+    0 0,
+    90% 0,
+    100% 50%,
+    90% 100%,
+    0 100%
+  );
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-}
-
-.sidebar button.selected::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-top: 15px solid transparent;
-  border-bottom: 15px solid transparent;
-  border-left: 10px solid #af47bd; /* misma tonalidad que el botón */
 }
