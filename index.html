@@ -8,15 +8,37 @@
 
   <!-- Estilos para el loader -->
   <style>
+    /* Sidebar fija a la izquierda */
     .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 250px;
-      /* Asegúrate de que la sidebar tenga un ancho fijo */
+      height: 100%;
+      background-color: #fff; /* Asegura que no sea transparente */
+      z-index: 10000;
+    }
+
+    .container {
+      display: flex;
+      margin-left: 250px; /* Deja espacio para el menú lateral */
+    }
+
+    .contenido {
+      flex: 1;
+    }
+
+    #menuToggle {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 10001;
     }
 
     #loader {
       position: fixed;
       top: 0;
-      left: 250px; /* Mismo ancho que la sidebar */
+      left: 250px;
       width: calc(100% - 250px);
       height: 100%;
       background: white;
@@ -25,8 +47,10 @@
       justify-content: center;
       flex-direction: column;
       z-index: 9999;
+      transition: all 0.3s ease;
     }
 
+    /* Loader animación */
     .spinner {
       border: 6px solid #f3f3f3;
       border-top: 6px solid #3498db;
@@ -47,6 +71,28 @@
       margin-top: 10px;
       color: #444;
     }
+
+    /* Responsive: cuando el menú se colapsa */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        left: -250px;
+        transition: left 0.3s ease;
+      }
+
+      .sidebar.active {
+        left: 0;
+      }
+
+      .container {
+        margin-left: 0;
+      }
+
+      #loader {
+        left: 0;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -54,7 +100,7 @@
   <!-- Pantalla de carga -->
   <div id="loader">
     <div class="spinner"></div>
-    <p class="loader-text">Cargando visor educativo...</p>
+    <p class="loader-text">Cargando visor 🌌...</p>
   </div>
 
   <!-- Botón menú responsive -->
@@ -87,29 +133,25 @@
     // Mostrar loader inicial
     loader.style.display = 'flex';
 
-    // Ocultar loader cuando el iframe carga por primera vez
     iframe.onload = () => {
       loader.style.display = 'none';
     };
 
     function cargarVisor(ruta) {
-      loader.style.display = 'flex'; // Mostrar loader
+      loader.style.display = 'flex';
 
       iframe.onload = () => {
-        loader.style.display = 'none'; // Ocultar cuando cargue
+        loader.style.display = 'none';
       };
 
       iframe.src = ruta;
 
-      // Elimina la clase "selected" de todos los botones
       document.querySelectorAll('.sidebar button').forEach(btn => {
         btn.classList.remove('selected');
       });
 
-      // Agrega la clase "selected" al botón que fue clickeado
       event.target.classList.add('selected');
 
-      // Oculta el sidebar en pantallas pequeñas
       const sidebar = document.querySelector('.sidebar');
       if (window.innerWidth <= 768) sidebar.classList.remove('active');
     }
