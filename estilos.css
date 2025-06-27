@@ -56,6 +56,7 @@ body {
   cursor: pointer;
   border-radius: 4px;
   transition: all 0.3s ease;
+  position: relative;
 }
 
 .sidebar button:hover {
@@ -139,8 +140,25 @@ iframe#visorFrame {
   }
 }
 
-/* NUEVO: botón seleccionado en menú lateral */
+/* =================================== */
+/* BOTÓN SELECCIONADO CON TRIÁNGULO  */
+/* =================================== */
 .sidebar button.selected {
   background-color: #af47bd;
-  transform: translateX(10px);
+  transform: translateX(15px);
+  position: relative;
+  z-index: 1;
+}
+
+.sidebar button.selected::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid #af47bd;
 }
