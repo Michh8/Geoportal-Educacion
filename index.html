@@ -34,6 +34,16 @@
   <script>
     function cargarVisor(ruta) {
       document.getElementById('visorFrame').src = ruta;
+
+      // Elimina la clase "selected" de todos los botones
+      document.querySelectorAll('.sidebar button').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+
+      // Agrega la clase "selected" al botón que fue clickeado
+      event.target.classList.add('selected');
+
+      // Oculta el sidebar en pantallas pequeñas
       const sidebar = document.querySelector('.sidebar');
       if (window.innerWidth <= 768) sidebar.classList.remove('active');
     }

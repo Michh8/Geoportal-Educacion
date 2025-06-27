@@ -55,6 +55,7 @@ body {
   border: none;
   cursor: pointer;
   border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 .sidebar button:hover {
@@ -136,4 +137,10 @@ iframe#visorFrame {
   iframe#visorFrame {
     height: calc(100vh - 50px);
   }
+}
+
+/* NUEVO: botón seleccionado en menú lateral */
+.sidebar button.selected {
+  background-color: #af47bd;
+  transform: translateX(10px);
 }
