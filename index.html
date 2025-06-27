@@ -8,10 +8,17 @@
 
   <!-- Estilos para el loader -->
   <style>
+    .sidebar {
+      width: 250px;
+      /* Asegúrate de que la sidebar tenga un ancho fijo */
+    }
+
     #loader {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      top: 0;
+      left: 250px; /* Mismo ancho que la sidebar */
+      width: calc(100% - 250px);
+      height: 100%;
       background: white;
       display: flex;
       align-items: center;
