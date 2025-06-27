@@ -4,53 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Geoportal Educativo</title>
+
+  <!-- Íconos de la aplicación -->
+  <link rel="icon" href="img/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="img/favicon.png">
+
   <link rel="stylesheet" href="estilos.css">
 
-  <!-- Estilos para el loader -->
+  <!-- Estilos internos -->
   <style>
-    /* Sidebar fija a la izquierda */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 250px;
-      height: 100%;
-      background-color: #fff; /* Asegura que no sea transparente */
-      z-index: 10000;
-    }
-
-    .container {
-      display: flex;
-      margin-left: 250px; /* Deja espacio para el menú lateral */
-    }
-
-    .contenido {
-      flex: 1;
-    }
-
-    #menuToggle {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 10001;
-    }
-
-    #loader {
-      position: fixed;
-      top: 0;
-      left: 250px;
-      width: calc(100% - 250px);
-      height: 100%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      z-index: 9999;
-      transition: all 0.3s ease;
-    }
-
-    /* Loader animación */
     .spinner {
       border: 6px solid #f3f3f3;
       border-top: 6px solid #3498db;
@@ -72,36 +34,26 @@
       color: #444;
     }
 
-    /* Responsive: cuando el menú se colapsa */
-    @media (max-width: 768px) {
-      .sidebar {
-        position: absolute;
-        left: -250px;
-        transition: left 0.3s ease;
-      }
+    .contenido {
+      position: relative;
+    }
 
-      .sidebar.active {
-        left: 0;
-      }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
 
-      .container {
-        margin-left: 0;
-      }
-
-      #loader {
-        left: 0;
-        width: 100%;
-      }
+    /* Responsive toggle menu button */
+    #menuToggle {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 9999;
     }
   </style>
 </head>
 <body>
-
-  <!-- Pantalla de carga -->
-  <div id="loader">
-    <div class="spinner"></div>
-    <p class="loader-text">Cargando visor 🌌...</p>
-  </div>
 
   <!-- Botón menú responsive -->
   <button id="menuToggle" onclick="toggleSidebar()">☰</button>
@@ -122,7 +74,24 @@
     </nav>
 
     <main class="contenido">
-      <iframe id="visorFrame" src="visores/zonas/index.html" frameborder="0"></iframe>
+      <!-- Loader solo dentro del visor -->
+      <div id="loader" style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        z-index: 10;">
+        <div class="spinner"></div>
+        <p class="loader-text">Cargando visor 🌌...</p>
+      </div>
+
+      <iframe id="visorFrame" src="visores/zonas/index.html"></iframe>
     </main>
   </div>
 
@@ -130,7 +99,6 @@
     const iframe = document.getElementById('visorFrame');
     const loader = document.getElementById('loader');
 
-    // Mostrar loader inicial
     loader.style.display = 'flex';
 
     iframe.onload = () => {
