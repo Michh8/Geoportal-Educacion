@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('totalHombres').textContent = `👨 Hombres: ${totalHombres.toLocaleString()}`;
       document.getElementById('totalMujeres').textContent = `👩 Mujeres: ${totalMujeres.toLocaleString()}`;
       const promedio = totalMujeres-totalHombres;
-      document.getElementById('promedioBrecha').textContent = `📊Brecha: ${promedio}%`;
+      document.getElementById('promedioBrecha').textContent = `📊Brecha: ${promedio}`;
 
       // 📊 Preparar datos solo para los gráficos
       dataParaGraficos.forEach(row => {
