@@ -5,8 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Geoportal Educativo</title>
   <link rel="stylesheet" href="estilos.css">
+
+  <style>
+    #loader {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #3498db;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-family: sans-serif;
+      font-size: 18px;
+      margin-top: 10px;
+      color: #444;
+    }
+  </style>
 </head>
+
 <body>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="spinner"></div>
+    <p class="loader-text">Cargando visor educativo...</p>
+  </div>
 
   <!-- Botón menú responsive -->
   <button id="menuToggle" onclick="toggleSidebar()">☰</button>
@@ -33,7 +75,11 @@
 
   <script>
     function cargarVisor(ruta) {
-      document.getElementById('visorFrame').src = ruta;
+      const iframe = document.getElementById('visorFrame');
+      const loader = document.getElementById('loader');
+
+      loader.style.display = 'flex'; // Mostrar loader
+      iframe.src = ruta;
 
       // Elimina la clase "selected" de todos los botones
       document.querySelectorAll('.sidebar button').forEach(btn => {
@@ -51,6 +97,16 @@
     function toggleSidebar() {
       document.querySelector('.sidebar').classList.toggle('active');
     }
+
+    // Oculta el loader al cargar el visor por primera vez
+    window.onload = () => {
+      const iframe = document.getElementById('visorFrame');
+      const loader = document.getElementById('loader');
+
+      iframe.onload = () => {
+        loader.style.display = 'none';
+      };
+    };
   </script>
 
 </body>
