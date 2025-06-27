@@ -51,7 +51,7 @@
       padding: 2px !important;
     }
 
-    /* Caja flotante del gráfico (esquina inferior izquierda) */
+    /* Caja flotante del gráfico (movible y redimensionable) */
     #zonaChartBox {
       position: absolute;
       bottom: 10px;
@@ -62,8 +62,15 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
       z-index: 999;
       width: 250px;
-      resize: both; /* CSS básico de redimensionamiento */
-      overflow: auto;
+      height: 250px;
+      resize: both;
+      overflow: hidden;
+    }
+
+    /* Ajusta el canvas al tamaño del contenedor */
+    #zonaChart {
+      width: 100% !important;
+      height: 100% !important;
     }
   </style>
 
@@ -80,7 +87,7 @@
 
   <!-- Contenedor del gráfico -->
   <div id="zonaChartBox">
-    <canvas id="zonaChart" width="230" height="230"></canvas>
+    <canvas id="zonaChart"></canvas>
   </div>
 
   <!-- Scripts de QGIS2Web -->
@@ -96,7 +103,7 @@
 
   <!-- Script para generar el gráfico -->
   <script>
-    let zonaChart; // Variable global para acceder desde fuera
+    let zonaChart; // Variable global para redibujar
 
     document.addEventListener("DOMContentLoaded", function () {
       try {
@@ -128,6 +135,7 @@
           },
           options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
               title: {
                 display: true,
@@ -140,12 +148,12 @@
           }
         });
 
-        // Hacer la caja del gráfico movible y redimensionable
+        // Hacer que el gráfico sea movible y redimensionable
         $("#zonaChartBox").draggable().resizable({
           minHeight: 150,
           minWidth: 150,
           resize: function () {
-            zonaChart.resize(); // Redibuja el gráfico al cambiar tamaño
+            zonaChart.resize(); // Redibuja correctamente al redimensionar
           }
         });
 
