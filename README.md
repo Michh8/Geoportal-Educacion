@@ -110,6 +110,5 @@ Puedes abrirlo localmente o subirlo a una plataforma como **Vercel**, **Netlify*
 ---
 
 ## 📬 Contacto
-
-**Autora**: [Tu Nombre]  
-**Correo**: [tucorreo@ejemplo.com]
+  
+**Correo**: [00381721@uca.edu.sv]
