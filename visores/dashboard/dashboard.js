@@ -33,12 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // 📈 Mostrar indicadores
       document.getElementById('totalHombres').textContent = `👨 Hombres: ${totalHombres.toLocaleString()}`;
       document.getElementById('totalMujeres').textContent = `👩 Mujeres: ${totalMujeres.toLocaleString()}`;
-      const promedio = totalMujeres-totalHombres;
+      const promedio = totalMujeres - totalHombres;
       document.getElementById('promedioBrecha').textContent = `📊Brecha: ${promedio}`;
 
       // 📊 Preparar datos solo para los gráficos
       dataParaGraficos.forEach(row => {
-        const nombre = row.nombre_cen || row.nombre || 'Escuela';
+        const nombreCentro = row.nombre_cen || row.nombre || 'Escuela';
+        const municipio = row.municipio || row.nombre_muni || 'Sin municipio';
+        const nombre = `${nombreCentro} (${municipio})`;
+
         const h = parseInt(row["2024_TOTAL_HOMBRES"] || 0);
         const m = parseInt(row["2024_TOTAL_MUJERES"] || 0);
         const total = h + m;
